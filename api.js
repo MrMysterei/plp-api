@@ -1,58 +1,47 @@
+// TO-DO: Break up into modules: https://www.stanleyulili.com/node/node-modules-import-and-use-functions-from-another-file/
+
+const config = require("./my_modules/config");
+const util = require("./my_modules/util");
+
 var express = require('express');
 var app = express();
 var fs = require("fs");
 
-const portNum = 5001;
-const linkSource = "/links.json";
-const catSource = "/categories.json";
-
-var server = app.listen(portNum, function () {
+var server = app.listen(config.portNum, function () {
    var host = server.address().address;
    var port = server.address().port;
    console.log(`API is listening at http://${host}:${port}`);
    console.log(`The API endpoint is available at http://localhost:${port}/`);
 });
 
-var allowCrossDomain = function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
-    res.header("Access-Control-Allow-Headers", "*");
-
-    // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
-        res.sendStatus(200);
-    }
-    else {
-        next();
-    }
-};
-
-app.use(allowCrossDomain);
+app.use(config.allowCrossDomain);
 
 app.get('/link', function (req, res) {
     let id = req.query.id;
     let categoryId = req.query.categoryId;
+    let path = __dirname + config.linkSource;
 
     if (id !== undefined) {
-        fyndById(res, linkSource, id);
+        util.fyndById(res, path, id);
     } else if(categoryId != undefined) {
-        fyndByCategoryId(res, linkSource, categoryId);
+        util.fyndByCategoryId(res, path, categoryId);
     } else {
-        yeetData(res, linkSource);
+        util.yeetData(res, path);
     }
 });
 
 app.get('/category', function (req, res) {
     let id = req.query.id;
+    let path = __dirname + config.catSource;
 
     if (id !== undefined) {
-        fyndById(res, catSource, id);
+        util.fyndById(res, path, id);
     } else {
-        yeetData(res, catSource);
+        util.yeetData(res, path);
     }
 });
 
+/*
 function yeetData(res, src) {
     console.log(`Getting "${src}" items.`);
 
@@ -90,18 +79,9 @@ function fyndByCategoryId(res, src, categoryId) {
         }
     });
 }
-
-/* Mongo DB Query tutorials:
-https://www.w3schools.com/nodejs/nodejs_mongodb_query.asp
-https://www.tutorialsteacher.com/nodejs/access-mongodb-in-nodejs
 */
 
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-// const uri = "mongodb+srv://Nicodemus:20Drowssap22!@cluster0.gaak3.mongodb.net/?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-
-// client.connect(err => {
-//     const collection = client.db("test").collection("devices");
-//         // perform actions on the collection object
-//     client.close();
-// });
+/* Mongo DB Query tutorials:
+// https://www.w3schools.com/nodejs/nodejs_mongodb_query.asp
+// https://www.tutorialsteacher.com/nodejs/access-mongodb-in-nodejs
+*/
