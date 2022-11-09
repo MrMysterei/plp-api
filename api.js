@@ -41,46 +41,6 @@ app.get('/category', function (req, res) {
     }
 });
 
-/*
-function yeetData(res, src) {
-    console.log(`Getting "${src}" items.`);
-
-    fs.readFile( __dirname + src, 'utf8', function (_err, data) {
-        res.end(data);
-    });
-}
-
-function fyndById(res, src, id) {
-    console.log(`Getting "${src}" item id "${id}".`);
-
-    fs.readFile( __dirname + src, 'utf8', function (__err, data) {
-        let fyle = JSON.parse(data);
-        let datum = fyle.find(obj => obj.id == id);
-
-        if (datum != null) {
-            res.end( JSON.stringify(datum));
-        } else {
-            res.end(`{'error': 'No ${src} match found for id "${id}".'}`);
-        }
-    });
-}
-
-function fyndByCategoryId(res, src, categoryId) {
-    console.log(`Getting links with category id "${categoryId}".`);
-
-    fs.readFile( __dirname + src, 'utf8', function (__err, data) {
-        let fyle = JSON.parse(data);
-        let datum = fyle.filter(obj => obj.categoryId == categoryId);
-
-        if (datum != null) {
-            res.end( JSON.stringify(datum));
-        } else {
-            res.end(`{'error': 'No link matches found for category id "${categoryId}".'}`);
-        }
-    });
-}
-*/
-
 /* Mongo DB Query tutorials:
 // https://www.w3schools.com/nodejs/nodejs_mongodb_query.asp
 // https://www.tutorialsteacher.com/nodejs/access-mongodb-in-nodejs
